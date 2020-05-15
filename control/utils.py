@@ -1,5 +1,7 @@
 import xlrd
 import xlsxwriter
+from pathlib import Path
+import requests
 
 
 
@@ -145,18 +147,27 @@ def suite_format(data):
     return testsuite
 
 
+# 判断当前目录是否存在
+def mkdir(p):
+    path = Path(p)
+    # 如果文件不存在 则创建
+    if not path.is_dir():
+        path.mkdir()
+
 
 
 if __name__ == "__main__":
+
 
 #    file_name = "/usr/local/sln-pro/my-world-git/testcase/testcase.xlsx"
 #    e = Excel("r", file_name)
 #    list_read = e.read()
 #    data = element_to_json(list_read)
 #    print(data)
-    test_case = "/usr/local/sln-pro/my-world-git/testcase/testcase.xlsx"
-    e_case = Excel("r", test_case)
-    re = e_case.read()
-    data = data_to_dict(re)
-    testsuite = suite_format(data)
-    print(testsuite)
+
+    # test_case = "/usr/local/sln-pro/my-world-git/testcase/testcase.xlsx"
+    # e_case = Excel("r", test_case)
+    # re = e_case.read()
+    # data = data_to_dict(re)
+    # testsuite = suite_format(data)
+    # print(testsuite)
