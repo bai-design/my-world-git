@@ -4,7 +4,6 @@ from pathlib import Path
 import requests
 
 
-
 # 操作Excel的工具类
 class Excel(object):
     # 初始化方法 参数type：为r是读取excel，为w是写入excel获取不同的实例，参数file_name是将要读取的文件
@@ -36,6 +35,7 @@ class Excel(object):
                 self.list_data.append(revalues)
         # 将得到的excel数据返回进行处理
         return self.list_data
+
 
 # 将元素和链接表处理为json格式方便进行查询
 def element_to_json(element):
@@ -89,9 +89,6 @@ def data_to_dict(data):
         # list里面是字典格式
         list_dict_data.append(dict_data)
     return list_dict_data
-
-
-
 
 
 # dict格式的数据处理为测试套件格式
@@ -155,19 +152,17 @@ def mkdir(p):
         path.mkdir()
 
 
-
 if __name__ == "__main__":
 
-
-#    file_name = "/usr/local/sln-pro/my-world-git/testcase/testcase.xlsx"
+# file_name = "/usr/local/sln-pro/my-world-git/testcase/testcase.xlsx"
 #    e = Excel("r", file_name)
 #    list_read = e.read()
 #    data = element_to_json(list_read)
 #    print(data)
 
-    # test_case = "/usr/local/sln-pro/my-world-git/testcase/testcase.xlsx"
-    # e_case = Excel("r", test_case)
-    # re = e_case.read()
-    # data = data_to_dict(re)
-    # testsuite = suite_format(data)
-    # print(testsuite)
+# test_case = "/usr/local/sln-pro/my-world-git/testcase/testcase.xlsx"
+# e_case = Excel("r", test_case)
+# re = e_case.read()
+# data = data_to_dict(re)
+# testsuite = suite_format(data)
+# print(testsuite)

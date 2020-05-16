@@ -19,9 +19,9 @@ formatter = logging.Formatter(
 # 创建log文件夹
 mkdir('/usr/local/sln-pro/my-world-git/control/log')
 # 文件日志
-log_file = str(Path('/usr/local/sln-pro/my-world-git/control/log')/'{}.log'.format(today()))
+log_file = str(Path('/usr/local/sln-pro/my-world-git/control/log') / '{}.log'.format(today()))
 file_handler = logging.FileHandler(log_file, mode='a', encoding='utf-8', delay=False)
-file_handler.setFormatter(formatter)   # 可以通过setFormatter指定输出格式
+file_handler.setFormatter(formatter)  # 可以通过setFormatter指定输出格式
 
 # 控制台日志
 console_handler = logging.StreamHandler(sys.stdout)
@@ -34,4 +34,3 @@ logger.addHandler(console_handler)
 # 指定日志的最低输出级别，默认为WARN级别
 # DEBUG，INFO，WARNING，ERROR，CRITICAL
 logger.setLevel(logging.INFO)
-

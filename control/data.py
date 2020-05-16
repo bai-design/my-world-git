@@ -1,7 +1,7 @@
 import re
 import time
-# 因为在data.py中replace函数会调用lib文件下b.py文件，所以咱们data.py中引入
 from lib import *
+# 因为在data.py中replace函数会调用lib文件下b.py文件，所以咱们data.py中引入
 
 
 # 这个方法是将自定义函数计算出来,eval函数可以用过字符的方法计算出结果内容，函数嵌套函数也是可以的
