@@ -153,16 +153,15 @@ def mkdir(p):
 
 
 if __name__ == "__main__":
+    #    file_name = "/usr/local/sln-pro/my-world-git/testcase/testcase.xlsx"
+    #    e = Excel("r", file_name)
+    #    list_read = e.read()
+    #    data = element_to_json(list_read)
+    #    print(data)
 
-# file_name = "/usr/local/sln-pro/my-world-git/testcase/testcase.xlsx"
-#    e = Excel("r", file_name)
-#    list_read = e.read()
-#    data = element_to_json(list_read)
-#    print(data)
-
-# test_case = "/usr/local/sln-pro/my-world-git/testcase/testcase.xlsx"
-# e_case = Excel("r", test_case)
-# re = e_case.read()
-# data = data_to_dict(re)
-# testsuite = suite_format(data)
-# print(testsuite)
+    test_case = "/usr/local/sln-pro/my-world-git/testcase/testcase.xlsx"
+    e_case = Excel("r", test_case)
+    re = e_case.read()
+    data = data_to_dict(re)
+    testsuite = suite_format(data)
+    print(testsuite)

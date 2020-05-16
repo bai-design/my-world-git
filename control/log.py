@@ -4,7 +4,6 @@ from pathlib import Path
 import sys
 from control.utils import mkdir
 
-
 # 获得当前的时间
 def today():
     now = datetime.datetime.now()
