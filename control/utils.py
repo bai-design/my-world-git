@@ -1,6 +1,8 @@
 import xlrd
 import xlsxwriter
 from pathlib import Path
+import operator
+import os
 import requests
 
 
@@ -16,10 +18,12 @@ class Excel(object):
             self.sheet_names = self.workbook.sheet_names()
             # 装载所有数据的list
             self.list_data = []
-
+            # 将测试数据内调用的方法，改编成自定义里面的变量
+            self.dict_data = {}
+        # 写入excel
         elif type == "w":
             # 获得写入excel的实例
-            self.workbook = xlsxwriter.workbook(file_name)
+            self.workbook = xlsxwriter.Workbook(file_name)
 
     def read(self):
         # 根据sheet_name去读取用例，并获取文件的总行数获取到每行的内容
@@ -35,6 +39,32 @@ class Excel(object):
                 self.list_data.append(revalues)
         # 将得到的excel数据返回进行处理
         return self.list_data
+
+    def write(self, data, sheet_name):
+        # 设置报告格式
+        sheet = self.workbook.add_worksheet(sheet_name)
+        # 设置列宽
+        sheet.set_column('A:Q', 15)
+
+        cell_format = self.workbook.add_format({'blod': True})
+        sheet.set_row(0, 20, cell_format)
+        # 红色
+        red = self.workbook.add_format({'bg_color': 'red', 'color': 'white'})
+        # 绿色
+        green = self.workbook.add_format({'bg_color': 'green', 'color': 'white'})
+
+        for i in range(len(data)):
+            for j in range(len(data[i])):
+                # 进行用例结果的背景颜色更改 不同状态的用例 不同颜色
+                if str(data[i][j]) == 'Fail':
+                    sheet.write(i, j, str(data[i][j]), red)
+                elif str(data[i][j]) == 'Pass':
+                    sheet.write(i, j, str(data[i][j]), green)
+                else:
+                    sheet.write(i, j, str(data[i][j]))
+
+    def close(self):
+        self.workbook.close()
 
 
 # 将元素和链接表处理为json格式方便进行查询
@@ -152,16 +182,100 @@ def mkdir(p):
         path.mkdir()
 
 
-if __name__ == "__main__":
-    #    file_name = "/usr/local/sln-pro/my-world-git/testcase/testcase.xlsx"
-    #    e = Excel("r", file_name)
-    #    list_read = e.read()
-    #    data = element_to_json(list_read)
-    #    print(data)
+# 获取接口返回值的格式，在httpcaps.py中进行调用
+def compare_key_value(json_p):
+    list_key = []
 
-    test_case = "/usr/local/sln-pro/my-world-git/testcase/testcase.xlsx"
-    e_case = Excel("r", test_case)
-    re = e_case.read()
-    data = data_to_dict(re)
-    testsuite = suite_format(data)
-    print(testsuite)
+    def getkey_value_all(input_json={}):
+        # 函数来判断一个对象是否是一个已知的类型
+        if isinstance(input_json, dict):
+            # keys() 函数以列表返回一个字典所有的键。
+            for key in input_json.keys():
+                # get() 函数返回指定键的值，如果值不在字典中返回默认值。
+                key_value = input_json.get(key)
+                # dict字典
+                if isinstance(key_value, dict):
+
+                    getkey_value_all(key_value)
+
+                elif isinstance(key_value, list):
+
+                    for json_array in key_value:
+                        getkey_value_all(json_array)
+                else:
+                    # " = " + str(key_value)
+                    # print(str(key))
+                    # 对象下面的key
+                    list_key.append(str(key))
+                    pass
+            # 对象类型的key
+            list_key.append(str(key))
+        elif isinstance(input_json, list):
+            for input_json_array in input_json:
+                getkey_value_all(input_json_array)
+
+    getkey_value_all(json_p)
+    return list_key
+
+
+# 写入token
+def writetoken(token):
+    path = Path('/usr/local/sln-pro/my-world-git/control/config') / ('txt_final.txt')
+    # 方法可以写入token和普通常量
+    f = open(path, 'a')
+    f.write(token)
+    f.close()
+
+
+# 对比两个json的函数
+
+def iscompare_json(sub, parent):
+    # 将json内容传入获取key值
+    a1 = compare_key_value(sub)
+    print(a1)
+    a2 = compare_key_value(parent)
+    print(a2)
+    # 两个key值进行对比
+    flag = operator.eq(a1, a2)
+    # 一致则通过
+    if flag == True:
+        return 'Pass'
+    # 不通过
+    else:
+        return 'Fail'
+
+
+# 创建必备的文件夹
+def creation_files():
+    # 切换工作目录
+    os.chdir('/usr/local/sln-pro/my-world-git/control')
+    # 创建文件
+    files = ('report', 'junit', 'book', 'file')
+    for file in files:
+        mkdir(file)
+    txt_path = str(Path('/usr/local/sln-pro/my-world-git/control/book') / ('txt_final.txt'))
+    txt = open(txt_path, 'w')
+    # seek() 方法用于移动文件读取指针到指定位置。
+    txt.seek(0)
+    # truncate() 方法用于截断文件，如果指定了可选参数 size，则表示截断文件为 size 个字符。 如果没有指定 size，则从当前位置起截断；截断之后 size 后面的所有字符被删除。
+    txt.truncate()
+    txt.close()
+
+
+if __name__ == "__main__":
+    file_name = "/usr/local/sln-pro/my-world-git/testcase/testcase.xlsx"
+    e = Excel("w", file_name)
+    print(e.sheet_names)
+    # list_read = e.read()
+    # data = element_to_json(list_read)
+    # print(data)
+#
+# test_case = "/usr/local/sln-pro/my-world-git/testcase/testcase.xlsx"
+# e_case = Excel("r", test_case)
+# re = e_case.read()
+# data = data_to_dict(re)
+# testsuite = suite_format(data)
+# print(testsuite)
+# sub = {'phone': '17547817934', 'type': '1'}
+# parent = {'phone': '17547817934', 'type': '1'}
+# print(iscompare_json(sub, parent))
