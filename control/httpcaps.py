@@ -1,9 +1,19 @@
 import requests
 from control.log import logger
-from control.utils import iscompare_json, writetoken
+from control.data import *
+import base64
+from control.data import element_tojson
 
 
-def http_requests(step, junit, sort='get'):
+def http_requests(step, junit):
+    # 获取到配置的头部文件数据
+    element = file_element
+    # 读取链接和元素表格全部内容
+    excel_element = Excel('r', file_element)
+    # 元素和接口转换为json，切片是为了去除表格的第一行
+    e = excel_element.read()[2:3]
+    elements = element_tojson(e)
+
     data = step['data'].replace("\n", "")
     http_type, parmars = datatating(data)
     # 记录为何不通过
@@ -98,16 +108,3 @@ def asset_content(expected, response):
     return fail_tent
 
 
-if __name__ == '__main__':
-    step = {'no': '1', 'testdot': '获取验证码功能验证', 'keyword': 'API', 'page': '',
-            'element': 'http://127.0.0.1:8888/index',
-
-            'data': "parmars={'phone': '17547817934', 'type': '1'}",
-
-            'expected': "{'msg': '这是我开发的第一个接口', 'msg_code': 0}", 'output': {'msg': '这是我开发的第一个接口', 'msg_code': 0},
-
-            'score': 'Pass', 'remark': '', '_keyword': 'API', '_element': '获取短信验证码',
-
-            '_expected': "{'msg': '这是我开发的第一个接口', 'msg_code': 0}", '_output': ''}
-
-    print(http_requests(step, 'get'))

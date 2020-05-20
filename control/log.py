@@ -2,7 +2,14 @@ import logging
 import datetime
 from pathlib import Path
 import sys
-from control.utils import mkdir
+
+
+def mkdir(p):
+    path = Path('/usr/local/sln-pro/my-world-git/control/' + p)
+    # 如果文件不存在 则创建
+    if not path.is_dir():
+        path.mkdir()
+
 
 # 获得当前的时间
 def today():
@@ -11,12 +18,14 @@ def today():
 
 
 # 获取logger实例，如果参数为空则返回root logger
-logger = logging.getLogger('myworld')
+logger = logging.getLogger('world')
 # 指定logger输出格式
 formatter = logging.Formatter(
     '%(asctime)s [%(levelname)s] %(filename)s line:%(lineno)d: %(message)s')
+
 # 创建log文件夹
-mkdir('/usr/local/sln-pro/my-world-git/control/log')
+mkdir('log')
+
 # 文件日志
 log_file = str(Path('/usr/local/sln-pro/my-world-git/control/log') / '{}.log'.format(today()))
 file_handler = logging.FileHandler(log_file, mode='a', encoding='utf-8', delay=False)
