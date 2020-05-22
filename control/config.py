@@ -58,3 +58,5 @@ file_element = str(Path('/usr/local/sln-pro/my-world-git/element')/('element.xls
 file_junit = str(Path('/usr/local/sln-pro/my-world-git/control/junit')/('testcase'+'-'+'junit'+'.xml'))
 # excel测试报告的路径
 excel_report = str(Path('/usr/local/sln-pro/my-world-git/control/report')/('testcase-report.xlsx'))
+# 生成xml的测试报告
+file_xml = str(Path('/usr/local/sln-pro/my-world-git/control/report')/('testcase-xml-report.xlsx'))

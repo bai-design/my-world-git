@@ -9,7 +9,7 @@ class Excel(object):
     # 初始化方法 参数type：为r是读取excel，为w是写入excel获取不同的实例，参数file_name是将要读取的文件
     def __init__(self, type, file_name):
         # 读取excel
-        if type == "r":
+        if type == 'r':
             # 打开文件
             self.workbook = xlrd.open_workbook(file_name)
             # 获取到所有的sheet_names,sheet1,sheet2获取到所有，获取到的是一个list
@@ -19,7 +19,7 @@ class Excel(object):
             # 将测试数据内调用的方法，改编成自定义里面的变量
             self.dict_data = {}
         # 写入excel
-        elif type == "w":
+        elif type == 'w':
             # 获得写入excel的实例
             self.workbook = xlsxwriter.Workbook(file_name)
 
@@ -79,7 +79,7 @@ def creation_files():
     # 切换工作目录
     os.chdir('/usr/local/sln-pro/my-world-git/control')
     # 创建文件
-    files = ('report', 'junit', 'book', 'file')
+    files = ('report', 'junit', 'book', 'file_pic', 'file')
     for file in files:
         mkdir(file)
     txt_path = str(Path('/usr/local/sln-pro/my-world-git/control/book') / ('txt_final.txt'))

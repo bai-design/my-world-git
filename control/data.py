@@ -1,4 +1,3 @@
-import re
 import time
 from control.config import header, report_header, header_custom, file_element
 from control.lib import *
