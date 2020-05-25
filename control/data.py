@@ -163,12 +163,12 @@ def element_tojson(element):
 
 
 # 写入token
-def writetoken(token):
-    path = Path('/usr/local/sln-pro/my-world-git/control/book') / ('txt_final.txt')
-    # 方法可以写入token和普通常量
-    f = open(path, 'a')
-    f.write(token)
-    f.close()
+# def writetoken(token):
+#     path = Path('/usr/local/sln-pro/my-world-git/control/book') / ('txt_final.txt')
+#     # 方法可以写入token和普通常量
+#     f = open(path, 'a')
+#     f.write(token)
+#     f.close()
 
 
 # 获取接口返回值的格式，在httpcaps.py中进行调用

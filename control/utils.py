@@ -82,10 +82,10 @@ def creation_files():
     files = ('report', 'junit', 'book', 'file_pic', 'file')
     for file in files:
         mkdir(file)
-    txt_path = str(Path('/usr/local/sln-pro/my-world-git/control/book') / ('txt_final.txt'))
-    txt = open(txt_path, 'w')
-    # seek() 方法用于移动文件读取指针到指定位置。
-    txt.seek(0)
-    # truncate() 方法用于截断文件，如果指定了可选参数 size，则表示截断文件为 size 个字符。 如果没有指定 size，则从当前位置起截断；截断之后 size 后面的所有字符被删除。
-    txt.truncate()
-    txt.close()
+    # txt_path = str(Path('/usr/local/sln-pro/my-world-git/control/book') / ('txt_final.txt'))
+    # txt = open(txt_path, 'w')
+    # # seek() 方法用于移动文件读取指针到指定位置。
+    # txt.seek(0)
+    # # truncate() 方法用于截断文件，如果指定了可选参数 size，则表示截断文件为 size 个字符。 如果没有指定 size，则从当前位置起截断；截断之后 size 后面的所有字符被删除。
+    # txt.truncate()
+    # txt.close()
