@@ -3,7 +3,7 @@ from pathlib import Path
 mail_dict = {'send_user': '1659935784@qq.com',  # 发件人
              'password': 'yknmfsvzoqsgdbcc',  # 授权码
              'receive_users': '1710448461@qq.com',  # 收件人地址
-             'receive_list': [],  # 收件人list地址
+             #'receive_list': [],  # 收件人list地址
              'subject': 'python自动化测试报告',  # 主题
              'email_text': 'This is a report, today',  # 邮件正文
              'server_address': 'smtp.qq.com',  # 服务器地址
@@ -53,10 +53,10 @@ header_custom = {'id': '用例编号', 'title': '用例标题', 'testdot': '测�
 # case的文件的路径
 file_case = str(Path('/usr/local/sln-pro/my-world-git/testcase')/('testcase.xlsx'))
 # element的文件的路径
-file_element = str(Path('/usr/local/sln-pro/my-world-git/element')/('element.xlsx'))
+file_element = str(Path('/usr/local/sln-pro/my-world-git/element')/('elements.xlsx'))
 # junit测试报告的路径
 file_junit = str(Path('/usr/local/sln-pro/my-world-git/control/junit')/('testcase'+'-'+'junit'+'.xml'))
 # excel测试报告的路径
-excel_report = str(Path('/usr/local/sln-pro/my-world-git/control/report')/('testcase-report.xlsx'))
+excel_report = str(Path('/usr/local/sln-pro/my-world-git/control/report')/('testcase-xml-report.xlsx'))
 # 生成xml的测试报告
 file_xml = str(Path('/usr/local/sln-pro/my-world-git/control/report')/('testcase-xml-report.xlsx'))

@@ -6,28 +6,29 @@ from control.utils import Excel
 from pathlib import Path
 import re
 import operator
+import json
 
 var = []
 
 
 # 这个方法是将自定义函数计算出来,eval函数可以用过字符的方法计算出结果内容，函数嵌套函数也是可以的
-def repace(data):
-    # 正则匹配出 data 中所有  中的变量，返回列表 不包含这些内容则返回空
-    keys = re.findall(r'<(.*?)>', data)
-    print(keys)
-    # 返回是个list，采用替换的方法进行数据重组
-    for r in keys:
-        # 第一个参数是原来的值，第二个是参数是计算出来之后得到的值
-        data = data.replace('<' + r + '>', eval(r))
-    data = data.replace("\n", "")
-    return data
+# def repace(data):
+#     # 正则匹配出 data 中所有  中的变量，返回列表 不包含这些内容则返回空
+#     keys = re.findall(r'<(.*?)>', data)
+#     print(keys)
+#     # 返回是个list，采用替换的方法进行数据重组
+#     for r in keys:
+#         # 第一个参数是原来的值，第二个是参数是计算出来之后得到的值
+#         data = data.replace('<' + r + '>', eval(r))
+#     data = data.replace("\n", "")
+#     return data
 
 
 def suite2data(data):
     """进行测试报告同步头部标题和内容对应"""
-    result = [[header_custom[key.lower()]] for key in report_header.values()]
+    result = [[header_custom[key.lower()] for key in report_header.values()]]
     for d in data:
-        s = d['step'][0]
+        s = d['steps'][0]
         testcase = [d.get('id', 'id'), d.get('title', 'title'), d.get('testdot', 'testdot'), s.get('no', 'no'),
                     s.get('_keyword', '_keyword'), s.get('page', 'page'), s.get('_element', '_element'),
                     s.get('data', 'data'),
@@ -37,7 +38,7 @@ def suite2data(data):
                     s.get('_resultinfo', '')]
         result.append(testcase)
 
-        for s in d['step'][1:]:
+        for s in d['steps'][1:]:
             step = ['', '', s.get('testdot', 'testdot'), s.get('no', 'no'), s.get('_keyword', '_keyword'),
                     s.get('page', 'page'), s.get('_element', '_element'), s.get('data', 'data'),
                     s.get('output', 'output'),
@@ -65,9 +66,10 @@ def datatating(data):
 
 # 断言校验
 def asset_content(ec_assert, response):
+    print(str(response))
     fail_tent = ''
     for t in eval(ec_assert):
-        if t in str(response):
+        if t not in str(response):
             fail_tent += '接口没有此值：%s,' % t
     return fail_tent
 
@@ -215,8 +217,9 @@ def iscompare_json(sub, parent):
     print(a2)
     # 两个key值进行对比
     flag = operator.eq(a1, a2)
+    print(flag)
     # 一致则通过
-    if flag == True:
+    if flag:
         return 'Pass'
     # 不通过
     else:
@@ -225,7 +228,10 @@ def iscompare_json(sub, parent):
 
 def rplaceto_tf(e, r):
     e = eval(str(e).replace("true", "True").replace("fail", "Fail").replace("null", "None"))
+    print(e)
     r = eval(str(r).replace("true", "True").replace("fail", "Fail").replace("null", "None"))
+    print(r)
+
     return e, r
 
 
@@ -254,9 +260,9 @@ def acquire(last_content, this_content, all_content):
         for m in match_obj:
             present.append(m)
     # 从index 0开始  根据原值内容 直接进行替换，然后直接返回
-    for i in range(0,len(present)):
+    for i in range(0, len(present)):
         # keys[i]是原来的值  present是获取的值 最后将特殊符号处理掉
-        this_content = str(this_content).replace(keys[i], present[i]).replace("^", "")
+        this_content = str(this_content).replace(keys[i], present[i]).replace('^', '')
     return this_content
 
 

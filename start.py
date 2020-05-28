@@ -14,9 +14,9 @@ autotest.play()
 # 生成allure测试报告
 # 参考资料 生成xml报告形式：https://llg.cubic.org/docs/junit/
 try:
-    os.system('allure serve control/junit')
+    os.system('mv /usr/local/sln-pro/my-world-git/control/junit/*.xml /usr/local/sln-pro/jenkins/workspace/my-world-git/allure-results/')
 except BaseException:
-    print('请安装allure')
+    print('allure测试报告没有在指定目录生成')
 # 发送测试报告到邮箱
 autotest.sendmail()
 # 结束时间

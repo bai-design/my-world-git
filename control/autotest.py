@@ -50,11 +50,9 @@ class Autotest(object):
             # 写入xml测试报告
             self.junit.case(case['id'], case['title'], datetime.now())
             # 创建守护进程，保证线程可以正常结束(deamon=False)
-            thread = threading.Thread(target=self.result.append(testcase.run(case)), name=case['title'] )
+            thread = threading.Thread(target=self.result.append(testcase.run(case)), name=case['title'])
             # 启动线程
             thread.start()
-            # 添加守护
-            thread.join()
         # 参数1：出错的步骤数，参数2：未通过的步骤，参数3：用例总数，参数4：跳过的用例 用例总数-去执行的数
         self.junit.suite(testcase.step_error, testcase.step_fail, len(self.test_suit), '')
         self.junit.write_toxml()
@@ -72,7 +70,7 @@ class Autotest(object):
     # 发送邮箱到测试报告
     def sendmail(self):
         msg = MIMEMultipart('mixed')
-        msg['Subject'] = mail_dict['suject']   # 主题
+        msg['Subject'] = mail_dict['subject']   # 主题
         msg['From'] = mail_dict['send_user']    # 发件人
         msg['To'] = mail_dict['receive_users']  # 收件人
 
@@ -88,7 +86,8 @@ class Autotest(object):
         # 发送邮件 SMTP
         smtp = smtplib.SMTP()
         smtp.connect(mail_dict['server_address'])  # 连接服务器，SMTP_SSL是安全传输
-        smtp.login(mail_dict['send_user'], mail_dict['receive_users'], msg.as_string())
+        smtp.login(mail_dict['send_user'], mail_dict['password'])
+        smtp.sendmail(mail_dict['send_user'], mail_dict['receive_users'], msg.as_string())
         logger.info('邮件发送成功~~~~~~~~~~~~')
         smtp.close()
 

@@ -14,7 +14,7 @@ class Junit(object):
         self.pstarttime = datetime.now()
         # 创建用例套件集
         # 创建根节点
-        self.testsuites = self.doc.createComment('testsuites')
+        self.testsuites = self.doc.createElement('testsuites')
         self.doc.appendChild(self.testsuites)
         # 当前时间
         self.nowtime = gettime()
@@ -41,7 +41,7 @@ class Junit(object):
         self.testsuite.setAttribute('timestamp', str(datetime.isoformat(self.pstarttime)))
 
     # 每条用例是一个case
-    def case(self, id ,title, time):
+    def case(self, id, title, time):
         # 创建case标签
         self.testcase = self.doc.createElement('testcase')
         # 用例的名称
@@ -76,7 +76,7 @@ class Junit(object):
 
         endtime = datetime.now()
         # 单个用例的执行时间
-        td = endtime -self.case_timer
+        td = endtime - self.case_timer
         time = float(
             (td.microseconds + (td.seconds + td.days * 24 * 3600) * 10 ** 6)) / 10 ** 6
         # self.testcase节点添加元素属性
@@ -93,13 +93,11 @@ class Junit(object):
             (td.microseconds + (td.seconds + td.days * 24 * 3600) * 10 ** 6)) / 10 ** 6
         # self.testsuite节点添加元素属性
         self.testsuite.setAttribute('time', '%s' % td_time)
-        # 父节点 self.testsuites  子节点：self.testsuite节点
         self.testsuites.appendChild(self.testsuite)
         file = Path('/usr/local/sln-pro/my-world-git/control/junit') / ('API' + '-' + 'ReportJunit@' +
                                                                         self.nowtime + '.xml')
         try:
-            f = open(file, 'w')
+            with open(file, 'w') as file_object:
+                self.doc.writexml(file_object, indent='', addindent='\t', newl='\n', encoding='utf-8')
         except Exception:
             logger.error('文件错误')
-        self.doc.writexml(f, indent='', addindent='\t', newl='\n', encoding='gbk')
-        f.close()

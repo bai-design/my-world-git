@@ -44,7 +44,7 @@ class Excel(object):
         # 设置列宽
         sheet.set_column('A:Q', 15)
 
-        cell_format = self.workbook.add_format({'blod': True})
+        cell_format = self.workbook.add_format({'bold': True})
         sheet.set_row(0, 20, cell_format)
         # 红色
         red = self.workbook.add_format({'bg_color': 'red', 'color': 'white'})

@@ -1,5 +1,5 @@
 from control.log import logger
-from control.data import repace, acquire
+from control.data import acquire
 from control import httpcaps
 import threading
 import time
@@ -36,18 +36,16 @@ class TestCase(object):
         # 记录执行的用例结果，新的用例来了，就清空了
         steps = []
 
-        for index, step in enumerate(self.case['step']):
+        for index, step in enumerate(self.case['steps']):
 
             try:
                 # 上一个步骤不为空，则进行判断是否需要接口关联
                 if self.last_step:
-                    # 从上个接口提取到下个接口想要的数据
+                        # 从上个接口提取到下个接口想要的数据
                     step['data'] = acquire(str(self.last_step['output']), str(step['data']), self.case)
+                    print(step['data'])
                     # 查看上个测试数据里面有没有这个内容
                     # 如果里面有#号，则吧测试数据重组
-                    # 将测试数据进行重组，调用自定义函数 计算出结果
-                if step['data']:
-                    step['data'] = repace(str(step['data']))
                 if '#' in str(step['data']):
                     # 只切割最后一个#
                     data_list = str(step['data']).rsplit('#', 1)
@@ -56,7 +54,7 @@ class TestCase(object):
                     logger.info('{}'.format(sleep_time[1]))
                     time.sleep(float(sleep_time[1]))
                 self.last_step = getattr(httpcaps, 'http_requests')(step, self.junit)
-                if self.last_step['score']!= 'Pass':
+                if self.last_step['score'] != 'Pass':
                     self.step_fail += 1
                 steps.append(self.last_step)
             except Exception as excepetion:

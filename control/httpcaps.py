@@ -1,7 +1,6 @@
 import requests
-from control.data import *
 import base64
-from control.data import element_tojson
+from control.data import element_tojson, datatating, iscompare_json, rplaceto_tf, asset_content, file_element, Excel
 from control.log import logger
 
 def http_requests(step, junit):
@@ -29,8 +28,7 @@ def http_requests(step, junit):
         headers = elements['headers']['url']
 
     if sort == 'post':
-        d = eval(str(data.get('file', {})))
-
+        d = eval(str(data.get('files', {})))
         fileorbase64 = d.get('swt', '')
         if fileorbase64 == 'file':
             del d['swt']
@@ -42,10 +40,10 @@ def http_requests(step, junit):
                                                     str(d.get('FILES'))), 'rb').read())) + '.jpg'
         data['files'] = d
         r = getattr(requests, sort)(url, data=str(data.get('params', {})), headers=eval(headers),
-                                    file=data.get('files', {}), stream=True)
+                                    files=data.get('files', {}), stream=True)
     elif sort == 'get':
-        r = getattr(requests, sort)(url, eval(str(data.get('params', {}))),
-                                    headers=eval(headers), stream=True)
+        r = getattr(requests, sort)(url, eval(str(data.get('params', {}))),  headers=eval(headers),
+                                    stream=True)
     # 记录为何不通过
     content = ''
     # 记录是否通过
@@ -63,7 +61,8 @@ def http_requests(step, junit):
     # 2.验证断言内容 断言只有在预期结果写了#('xxx','xxx')这种才会进行
     if str(step['assert']).strip():
         # 1预期结果 2需要断言的内容 是元祖类型 ,返回：断言通过 返回'' ，反之返回不通过的字段
-        is_as_pass = asset_content(step['assert'], r.json)
+        print(step['assert'])
+        is_as_pass = asset_content(step['assert'], r.json())
         # 通过
         if is_as_pass == '':
             content += '断言通过'
@@ -71,11 +70,12 @@ def http_requests(step, junit):
         else:
             list_record.append(1)
             content += '断言不通过%s' % is_as_pass
+            print(content)
     # 3.验证返回值json格式
     if str(step['expected']).strip():
-        reponse ,expected = rplaceto_tf(r.json, step['expected'])
-        result = iscompare_json(expected, reponse)
-        if result == 'Pass':
+        response, expected = rplaceto_tf(r.json(), step['expected'])
+        results = iscompare_json(expected, response)
+        if results == 'Pass':
             content += '对比格式通过'
         else:
             list_record.append(1)
@@ -83,14 +83,15 @@ def http_requests(step, junit):
     if len(list_record) >= 1:
         step['score'] = 'Fail'
         junit.failure('testdot:' + step['testdot'] + '-' + 'step:' + step['no'] + '-' + 'element:' + step[
-            'element'] + '-' + ', %s' % content)
+            '_element'] + '-' + ', %s' % content)
     else:
         step['score'] = 'Pass'
     step['_resultinfo'] = content
     step['resultinfo'] = content
-    step['output'] = r.json
+    step['output'] = r.json()
+    print(step['output'])
     logger.info('下面是功能点:%s的返回值' % str(step['testdot']))
-    logger.info(r.json)
+    logger.info(r.json())
     return step
 
 
