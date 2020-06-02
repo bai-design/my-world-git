@@ -50,6 +50,14 @@ header_custom = {'id': '用例编号', 'title': '用例标题', 'testdot': '测�
                  'designer': '设计者', 'score': '步骤结果',
                  'remark': '备注'}
 
+
+oracle_dict = {'username': 'test_ex',
+               'passwd': 'test_ex',
+               'host': '192.168.6.191',
+               'port': '1521',
+               'sid': 'orcl'
+               }
+
 # case的文件的路径
 file_case = str(Path('/usr/local/sln-pro/my-world-git/testcase')/('testcase.xlsx'))
 # element的文件的路径
