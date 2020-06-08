@@ -18,7 +18,7 @@ def today():
 
 
 # 获取logger实例，如果参数为空则返回root logger
-logger = logging.getLogger('world')
+logger = logging.getLogger()
 # 指定logger输出格式
 formatter = logging.Formatter(
     '%(asctime)s [%(levelname)s] %(filename)s line:%(lineno)d: %(message)s')
@@ -34,6 +34,7 @@ file_handler.setFormatter(formatter)  # 可以通过setFormatter指定输出格�
 # 控制台日志
 console_handler = logging.StreamHandler(sys.stdout)
 console_handler.formatter = formatter  # 也可以直接给formatter赋值
+#console_handler.setFormatter(formatter)
 
 # 为logger添加的日志处理器
 logger.addHandler(file_handler)

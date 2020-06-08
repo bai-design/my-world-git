@@ -13,6 +13,7 @@ def get_weath(url, parmars):
 
 if __name__ == '__main__':
     url = 'https://apis.juhe.cn/mobile/Example/query.php'
-    parmars = {'phoneNo': '17602184275'}
+    parmars = {'phoneNo': '15104594631'}
     cookies = get_weath(url, parmars)
     print(cookies)
+
