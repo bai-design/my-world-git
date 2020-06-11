@@ -9,6 +9,7 @@ from email.mime.text import MIMEText
 import smtplib
 from control.junit import Junit
 from control.config import *
+from control.login_session import login_sess
 import threading
 import requests
 import time
@@ -29,6 +30,8 @@ class Autotest(object):
         # 以下为邮件配置
         self.report = excel_report
         self.junit = Junit()
+        #保持登录状态
+        self.login_sess = login_sess()
         # 创建文件
         creation_files()
 
@@ -50,7 +53,7 @@ class Autotest(object):
             # 写入xml测试报告
             self.junit.case(case['id'], case['title'], datetime.now())
             # 创建守护进程，保证线程可以正常结束(deamon=False)
-            thread = threading.Thread(target=self.result.append(testcase.run(case)), name=case['title'])
+            thread = threading.Thread(target=self.result.append(testcase.run(case, self.login_sess)), name=case['title'])
             # 启动线程
             thread.start()
         # 参数1：出错的步骤数，参数2：未通过的步骤，参数3：用例总数，参数4：跳过的用例 用例总数-去执行的数

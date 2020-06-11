@@ -1,9 +1,12 @@
 import requests
+import requests.sessions
 import base64
 from control.data import element_tojson, datatating, iscompare_json, rplaceto_tf, asset_content, file_element, Excel
 from control.log import logger
 
-def http_requests(step, junit):
+
+def http_requests(step, junit, login_sess):
+
     # 获取到配置的头部文件数据
     element = file_element
     # 读取链接和元素表格全部内容
@@ -26,8 +29,11 @@ def http_requests(step, junit):
     # 是空 则去读取element里面的
     else:
         headers = elements['headers']['url']
+    # 自动保存cookies
+    login_session = login_sess
 
     if sort == 'post':
+
         d = eval(str(data.get('files', {})))
         fileorbase64 = d.get('swt', '')
         if fileorbase64 == 'file':
@@ -39,11 +45,19 @@ def http_requests(step, junit):
             d['FILES'] = str(base64.b64encode(open(('/usr/local/sln-pro/my-world-git/control/config/file_pic' +
                                                     str(d.get('FILES'))), 'rb').read())) + '.jpg'
         data['files'] = d
-        r = getattr(requests, sort)(url, data=str(data.get('params', {})), headers=eval(headers),
+        if hasattr(login_sess, 'cookies'):
+            r = getattr(login_session, sort)(url, data=str(data.get('params', {})), headers=eval(headers),
                                     files=data.get('files', {}), stream=True)
+        else:
+            r = getattr(requests, sort)(url, data=str(data.get('params', {})), headers=eval(headers),
+                                       files=data.get('files', {}), stream=True)
     elif sort == 'get':
-        r = getattr(requests, sort)(url, eval(str(data.get('params', {}))),  headers=eval(headers),
+        if hasattr(login_sess, 'cookies'):
+            r = getattr(login_session, sort)(url, eval(str(data.get('params', {}))),  headers=eval(headers),
                                     stream=True)
+        else:
+            r = getattr(requests, sort)(url, eval(str(data.get('params', {}))), headers=eval(headers),
+                                           stream=True)
     # 记录为何不通过
     content = ''
     # 记录是否通过

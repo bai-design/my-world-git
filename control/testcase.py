@@ -30,7 +30,7 @@ class TestCase(object):
         return TestCase._instance
 
     #  执行测试用例
-    def run(self, case):
+    def run(self, case, login_sess):
         # 当前执行的用例
         self.case = case
         # 记录执行的用例结果，新的用例来了，就清空了
@@ -53,7 +53,7 @@ class TestCase(object):
                     sleep_time = data_list[1].split('=')
                     logger.info('{}'.format(sleep_time[1]))
                     time.sleep(float(sleep_time[1]))
-                self.last_step = getattr(httpcaps, 'http_requests')(step, self.junit)
+                self.last_step = getattr(httpcaps, 'http_requests')(step, self.junit, login_sess)
                 if self.last_step['score'] != 'Pass':
                     self.step_fail += 1
                 steps.append(self.last_step)

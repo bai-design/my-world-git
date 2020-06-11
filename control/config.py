@@ -68,3 +68,16 @@ file_junit = str(Path('/usr/local/sln-pro/my-world-git/control/junit')/('testcas
 excel_report = str(Path('/usr/local/sln-pro/my-world-git/control/report')/('testcase-xml-report.xlsx'))
 # 生成xml的测试报告
 file_xml = str(Path('/usr/local/sln-pro/my-world-git/control/report')/('testcase-xml-report.xlsx'))
+
+
+#登录时需要POST的数据
+longin_paramers = {}
+#设置请求头
+login_headers = {}
+#登录时表单提交到的地址
+login_url = ''
+#登录开关
+login_status = False
+
+
+
