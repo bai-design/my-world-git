@@ -7,6 +7,7 @@ import time
 
 class TestCase(object):
     _instance_lock = threading.Lock()
+    __instance = None
 
     def __init__(self, junit):
         self.junit = junit
@@ -23,11 +24,11 @@ class TestCase(object):
 
     def __new__(cls, *args, **kwargs):
         """采用单例的设计模式,指向同一地址空间"""
-        if not hasattr(TestCase, "_instance"):
+        if not cls.__instance:
             with TestCase._instance_lock:
-                if not hasattr(TestCase, "_instance"):
-                    TestCase._instance = object.__new__(cls)
-        return TestCase._instance
+                if not cls.__instance:
+                    cls.__instance = object.__new__(cls)
+        return cls.__instance
 
     #  执行测试用例
     def run(self, case, login_sess):

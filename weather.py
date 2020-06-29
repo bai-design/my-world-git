@@ -20,3 +20,4 @@ reseponse_00 = res.get(url_01)
 cookies = dict_from_cookiejar(reseponse.cookies)
 print(cookies)
 
+
