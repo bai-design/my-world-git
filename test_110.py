@@ -313,22 +313,23 @@ print(re_url_0)
 
 #52、list=[2,3,5,4,9,6]，从小到大排序，不许用sort，输出[2,3,4,5,6,9]
 new_list = []
-list = [2, 3, 5, 4, 9, 6]
+lists = [2, 3, 5, 4, 9, 6]
 def get_min():
-    values_min = min(list)
-    list.remove(values_min)
+    values_min = min(lists)
+    lists.remove(values_min)
     new_list.append(values_min)
-    if len(list) > 0:
+    if len(lists) > 0:
         get_min()
     return new_list
 print(get_min())
 
 
-list = [2, 3, 5, 4, 9, 6]
-for i in range(-len(list),-1,1):
-    if list[i] >= list[i+1]:
-        list[i], list[i+1] = list[i+1], list[i]
-print(list)
+lists = [2, 3, 5, 4, 9, 6]
+for i in range(-len(lists),-1,1):
+    if lists[i] >= lists[i+1]:
+        lists[i], lists[i+1] = lists[i+1], lists[i]
+print(lists)
+
 
 #53、写一个单列模式
 class Sigletion(object):
@@ -430,3 +431,293 @@ print(j)
 print(id(h))
 print(id(i))
 print(id(j))
+#67、列出几种魔法方法并简要介绍用途
+
+#68、C:\Users\ry-wu.junya\Desktop>python 1.py 22 33命令行启动程序并传参，print(sys.argv)会输出什么数据？
+import sys
+print(sys.argv)
+#69、请将[i for i in range(3)]改成生成器
+a = (i for i in range(3))
+print(type(a))
+#70、a = "  hehheh  ",去除收尾空格
+a = "  hehheh  "
+print(a.strip())
+#71、举例sort和sorted对列表排序，list=[0,-1,3,-10,5,9]
+lists=[0,-1,3,-10,5,9]
+new_list = sorted(lists, reverse=False)
+print(new_list)
+lists.sort(reverse=False)
+print(lists)
+#72、对list排序foo = [-5,8,0,4,9,-4,-20,-2,8,2,-4],使用lambda函数从小到大排序
+foo = [-5,8,0,4,9,-4,-20,-2,8,2,-4]
+new_foo = sorted(foo, key=lambda x:x ,reverse=False)
+print(new_foo)
+#73、使用lambda函数对list排序foo = [-5,8,0,4,9,-4,-20,-2,8,2,-4]，输出结果为[0,2,4,8,8,9,-2,-4,-4,-5,-20]，正数从小到大，负数从大到小】
+foo = [-5,8,0,4,9,-4,-20,-2,8,2,-4]
+new_foo = sorted(foo, key=lambda x: (x< 0, abs(x)), reverse=False)
+print(new_foo)
+#74、列表嵌套字典的排序，分别根据年龄和姓名排序
+
+foo = [{"name":"zs","age":19},{"name":"ll","age":54},
+
+        {"name":"wa","age":17},{"name":"df","age":23}]
+age_foo = sorted(foo, key=lambda x: x["age"], reverse= False)
+print(age_foo)
+name_foo = sorted(foo, key= lambda x:x["name"], reverse=False)
+print(name_foo)
+
+#75、列表嵌套元组，分别按字母和数字排序
+foo = [["zs", 19], ["ll", 54], ["wa", 17], ["df", 23]]
+num_foo = sorted(foo, key=lambda x:x[1], reverse=False)
+str_foo = sorted(foo, key=lambda x:x[0], reverse=False)
+print(num_foo)
+print(str_foo)
+
+#76、列表嵌套列表排序，年龄数字相同怎么办？
+foo = [["zs", 19], ["ll", 54], ["wa", 19], ["df", 23]]
+num_foo = sorted(foo, key=lambda x:(x[1],x[0]), reverse=False)
+print(num_foo)
+
+#77、foo="abicdfeboxyz",输出结果 "obecdfibaxyz
+foo = "abicdfeboxyz"
+new_foo = [i for i in foo]
+begin = 0
+end = len(new_foo)-1
+while begin < end :
+    while new_foo[begin] not in ['a', 'e', 'i', 'o', 'u']:
+        begin += 1
+    while new_foo[end] not in ['a', 'e', 'i', 'o', 'u']:
+        end -= 1
+    if begin < end:
+        new_foo[begin], new_foo[end] = new_foo[end], new_foo[begin]
+        begin += 1
+        end -= 1
+print(''.join(new_foo))
+# 78.安装ssh, 接受ssh不同的可能性
+# yum install sudo
+# sudo yum install openssl-server
+# systemctl status sshd
+# systemctl start sshd
+# IP  firewalld  selinux  process
+# 79.九九乘法表
+for i in range(1,10):
+    for j in range(1,i+1):
+        print("{}*{}={}".format(i, j, i*j),end='\t')
+    print()
+#80 冒泡排序
+lists = [2, 3, 5, 4, 9, 6]
+
+for i in range(len(lists)-1):
+    for j in range(len(lists)-i -1):
+        if lists[j] > lists[j+1]:
+            lists[j], lists[j+1] = lists[j+1], lists[j]
+print(lists)
+
+#81 根据键对字典排序
+dic = {"name": "zs", "sex": "man", "city": "bj"}
+new_list = sorted(dic.items(),key = lambda x:x[0], reverse=False)
+new_dic = dict(new_list)
+print(new_dic)
+#82 根据键对字典排序
+dic = {"name": "zs", "sex": "man", "city": "bj"}
+new_list = [i for i in zip(dic.keys(),dic.values())]
+new_dic = sorted(new_list, key = lambda x:x[0], reverse = False)
+new_dic_re = dict(new_dic)
+print(new_dic_re)
+
+#83、列表推导式、字典推导式、生成器
+list_a = [i for i in range(3)]
+dict_a = {i:j for i,j in zip(new_dic_re.keys(),dic.values()) }
+generator_a = (i for i in range(3))
+print(list_a)
+print(dict_a)
+print(generator_a)
+#84、最后出一道检验题目，根据字符串长度排序，看排序是否灵活运用
+s = ["a", "mnc", "wcez", "bx"]
+new_s = sorted(s, key= lambda x:len(x), reverse=True)
+s.sort(key=lambda x:len(x) , reverse=True)
+print(new_s)
+print(s)
+#85、举例说明SQL注入和解决办法
+#86、s="info:xiaoZhang 33 shandong",用正则切分字符串输出['info', 'xiaoZhang', '33', 'shandong']
+s="info:xiaoZhang 33 shandong"
+new_s = re.split(r':| ', s)
+print(new_s)
+#87、正则匹配以163.com结尾的邮箱
+email_list =["17602184275@163.com", "??@163.com", "1710448461@qq.com"]
+for email in email_list:
+    re_mail = re.match("[\w]{4,20}@163\.com$", email)
+    if re_mail:
+        print(email)
+        print(re_mail.group())
+#87、递归求和
+def dg_sum(n):
+    if n == 0 :
+        sum = 0
+    else:
+        sum = n + dg_sum(n-1)
+    return sum
+
+print(dg_sum(10))
+
+#88 python字典和json字符串相互转化方法
+import json
+dic = {"name": "zs", "sex": "man", "city": "bj"}
+a0 = json.dumps(dic)
+print(type(a0))
+a1 = json.loads(a0)
+print(type(a1))
+#89、MyISAM 与 InnoDB 区别
+#90、统计字符串中某字符出现次数
+str ="xy x y a b a c"
+count = Counter(str)
+a_count = str.count("a")
+print(count)
+print(a_count)
+#91.字符串转化大小写
+str_str = 'abcDEF'
+print(str_str.upper())
+print(str_str.lower())
+print(str_str.title())
+#92.用两种方法去空格
+mt = ' x y z '
+list_mt = mt.split(' ')
+new_mt = ''.join(list_mt)
+print(new_mt)
+mt = '  x y z '
+list_mt = mt.replace(' ', '')
+print(new_mt)
+#93、正则匹配不是以4和7结尾的手机号
+tels = ["17602184275", "10086", "15945538634", "15045504827"]
+for tel in tels:
+    re_tel = re.match('1[\d]{9}[0-3,5-6,8-9]', tel)
+    if re_tel:
+        print(tel)
+        print(re_tel.group())
+#94. 简述python引用计数机制
+class Item():
+    def __init__(self,name,price):
+        self.name=name
+        self.price=price
+    def __del__(self):
+        print('del方法删除对象')
+#创建一个Item对象，将之赋值给it变量
+it = Item('鼠标',29.8)
+x = it
+#打印it所引用的Item对象
+del x
+print('----------')
+del it
+print('----------')
+
+#94.int("1.4"),int(1.4)输出结果？
+try:
+    a = int("1.4")
+except Exception as e:
+    print(e)
+finally:
+    b = int(1.4)
+    print(b)
+
+#95.列举3条以上PEP8编码规范
+#96、正则表达式匹配第一个URL
+image = '<img src="https://timgsa.baidu.com/1.jpg" src="https://timgsa.baidu.com/2.jpg" src="https://timgsa.baidu.com/3.jpg" data-clicktime="1593572427791" >'
+re_image = re.findall(r"https://.*?\.jpg", image)
+print(re_image[0])
+#97 正则匹配中文
+tilte = "结果 PEP8 两行"
+re_title = re.compile(r'[\u4E00-\u9FA5]+')
+new_title = re_title.findall(tilte)
+print(new_title)
+#98、简述乐观锁和悲观锁
+#99、r、r+、rb、rb+文件打开模式区别
+#100、Linux命令重定向 > 和 >>
+#101正则表达式匹配出<html><h1>www.itcast.cn</h1></html>
+
+labels = ["<html><h1>www.itcast.cn</h1></html>", "<html><h1>www.itcast.cn</h2></html>"]
+re_labels = re.compile(r"<(.*?)><(.*?)>.*?</\2></\1>")
+for lable in labels:
+    new_label = re_labels.match(lable)
+    if new_label:
+        print(new_label.group(0))
+#102 python传参数是传值还是传址？
+#传址
+def fn(n):
+    n += n
+    print(n)
+    print(id(n))
+
+s = 1
+print(id(s))
+fn(s)
+print(s)
+print(id(s))
+
+c = [1, 2, 3]
+print(id(c))
+fn(c)
+print(c)
+print(id(c))
+# 103 求两个列表的交集、差集、并集
+a = [1, 2, 3, 4]
+b = [3, 5, 3, 6]
+intersection_a_b = list(set(a).intersection(set(b)))
+union_a_b = list(set(a).union(set(b)))
+diffrence_a_b = list(set(a).difference(set(b)))
+diffrence_b_a = list(set(b).difference(set(a)))
+print('{},{},{},{}'.format(intersection_a_b, union_a_b, diffrence_a_b, diffrence_b_a))
+# 104生成0-100的随机数
+from numpy.random import rand, randn, random, randint,choice
+
+num_0 = rand(5) * 100
+num_1 = randint(101, size=5)
+num_2 = random(5)
+print(num_0)
+print(num_1)
+print(num_2)
+#105 lambda匿名函数好处
+a = ["a", "b", "c" ,"", "x", "y", "z"]
+res = list(map(lambda x:"hello" if x =="" else x, a))
+print(res)
+#106、常见的网络传输协议
+# TCP UDP
+#107 单引号、双引号、三引号用法
+#108 HTTP请求中get和post区别
+# python中读取Excel文件的方法
+#xlsx
+import openpyxl
+book = openpyxl.load_workbook("/usr/local/sln-pro/my-world-git/element/elements.xlsx")
+sheet_names = book.sheetnames
+work_sheet = book[sheet_names[0]]
+if work_sheet.rows:
+    for row in work_sheet.rows:
+        for cell in row:
+            print(cell.value, '\t', end='')
+        print()
+
+#xls
+import xlrd
+book = xlrd.open_workbook("/usr/local/sln-pro/my-world-git/element/elements.xlsx")
+sheet_names = book.sheet_names()
+sheet = book.sheet_by_index(0)
+m = sheet.nrows
+n = sheet.ncols
+for i in range(m):
+    print(sheet.row_values(i))
+#csv
+import csv
+file_object = open("./1.csv", 'r', encoding='gbk')
+rows = csv.reader(file_object)
+#rows = csv.DictReader(file_object)
+for row in rows:
+    print(row)
+a = ["a", "b", "c", "d"]
+#headers =[]
+file_objects = open("./1.csv", 'a+', encoding='gbk')
+new_rows = csv.writer(file_objects)
+#new_rows = csv.DictWriter(file_objects, headers)
+#new_rows.writeheader()
+new_rows.writerow(a)
+
+#109、简述多线程、多进程
+#110、python正则中search和match
